@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Form implementation generated from reading ui file 'renamer.ui'
-# Created by: PyQt5 UI code generator 5.15.4
+# Created by: PyQt5 UI code generator 5.9.2
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from main import *
 import os
 
 
@@ -24,7 +25,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setFont(font)
         self.centralwidget.setObjectName("centralwidget")
         self.formLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(80, 150, 731, 86))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(80, 150, 731, 138))
         self.formLayoutWidget.setObjectName("formLayoutWidget")
         self.formLayout = QtWidgets.QFormLayout(self.formLayoutWidget)
         self.formLayout.setContentsMargins(0, 0, 0, 0)
@@ -78,6 +79,8 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
         self.delim_location_input.setFont(font)
         self.delim_location_input.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.delim_location_input.setObjectName("delim_location_input")
@@ -85,16 +88,42 @@ class Ui_MainWindow(object):
         self.delim_location_input.addItem("")
         self.delim_location_input.addItem("")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.delim_location_input)
+        self.keep_label = QtWidgets.QLabel(self.formLayoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        self.keep_label.setFont(font)
+        self.keep_label.setObjectName("keep_label")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.keep_label)
+        self.keep_input = QtWidgets.QComboBox(self.formLayoutWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.keep_input.sizePolicy().hasHeightForWidth())
+        self.keep_input.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.keep_input.setFont(font)
+        self.keep_input.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.keep_input.setObjectName("keep_input")
+        self.keep_input.addItem("")
+        self.keep_input.addItem("")
+        self.keep_input.addItem("")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.keep_input)
         self.go_button = QtWidgets.QPushButton(self.centralwidget)
         self.go_button.setGeometry(QtCore.QRect(390, 330, 121, 31))
         font = QtGui.QFont()
+        font.setPointSize(15)
         font.setBold(True)
         font.setWeight(75)
         self.go_button.setFont(font)
         self.go_button.setStyleSheet("color: rgb(0, 170, 0);")
         self.go_button.setObjectName("go_button")
         self.title_label = QtWidgets.QLabel(self.centralwidget)
-        self.title_label.setGeometry(QtCore.QRect(375, 30, 151, 23))
+        self.title_label.setGeometry(QtCore.QRect(360, 30, 181, 23))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -120,80 +149,48 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "File Renamer"))
         self.dir_label.setText(_translate("MainWindow", "File Directory:"))
+        self.dir_input.setPlaceholderText(_translate("MainWindow", "Enter full directory here"))
         self.delim_label.setText(_translate("MainWindow", "Delimiter:"))
         self.delim_location_label.setText(_translate("MainWindow", "Delimiter Location:"))
-        self.delim_location_input.setItemText(0, _translate("MainWindow", "----------"))
-        self.delim_location_input.setItemText(1, _translate("MainWindow", "Front"))
-        self.delim_location_input.setItemText(2, _translate("MainWindow", "Back"))
+        self.delim_location_input.setItemText(0, _translate("MainWindow", "------------------"))
+        self.delim_location_input.setItemText(1, _translate("MainWindow", "First"))
+        self.delim_location_input.setItemText(2, _translate("MainWindow", "Last"))
+        self.keep_label.setText(_translate("MainWindow", "Keep Contents:"))
+        self.keep_input.setItemText(0, _translate("MainWindow", "-----------------------"))
+        self.keep_input.setItemText(1, _translate("MainWindow", "Before Delimiter"))
+        self.keep_input.setItemText(2, _translate("MainWindow", "After Delimiter"))
         self.go_button.setText(_translate("MainWindow", "GO"))
         self.title_label.setText(_translate("MainWindow", "File Renamer"))
 
     def run_renamer(self):
-        in_dir = str(self.dir_input.text())
-        in_delim = str(self.delim_input.text())
-        in_delim_location = str(self.delim_location_input.currentText())
-        files = os.listdir(in_dir)
+        in_dir = str(self.dir_input.text())  # Directory where names will be changes
+        in_delim = str(self.delim_input.text())  # Delimiter
+        in_delim_location = str(self.delim_location_input.currentText())  # First or last delimiter
+        keep_where = str(self.keep_input.currentText())  # Keep text before or after delimiter
+        files = os.listdir(in_dir)  # Files in the provided directory
 
-        allowed_types = [".jpg", ".jpeg", ".png", ".gif", ".bmp"]
+        if "-" in in_delim_location or "-" in keep_where or in_delim == "":
+            in_delim_location = ""
+            keep_where = ""
+            in_delim = ""
+
         print(f"Renaming files in \"{in_dir}\"")
 
-        if in_delim != "" and in_delim_location != "":
-            file_counter = 1
-            for file in files:
-                file_name = file
-                file_type = "." + file_name.split(".")[-1]
-                if in_delim in file_name and file_type in allowed_types:
-                    if in_delim_location == "Front":
-                        old_full = in_dir + '\\' + file_name
-                        new_file_name = file_name.split(in_delim)[0] + file_type
-                        new_file_name = check_name(new_file_name, in_dir)
-                        new_full = in_dir + '\\' + new_file_name
-                        os.rename(old_full, new_full)
-                        show_new = new_full.split('\\')[-1]
-                        print(f"({file_counter})\t{file_name} -> {show_new}")
-                        file_counter += 1
-                    elif in_delim_location == "Back":
-                        old_full = in_dir + '\\' + file_name
-                        new_file_name = file_name.split(in_delim)[-1] + file_type
-                        new_file_name = check_name(new_file_name, in_dir)
-                        new_full = in_dir + '\\' + new_file_name
-                        os.rename(old_full, new_full)
-                        show_new = new_full.split('\\')[-1]
-                        print(f"({file_counter})\t{file_name} -> {show_new}")
-                        file_counter += 1
+        if in_delim != "" and in_delim_location != "" and keep_where != "":
+            selected_renamer(in_dir, files, in_delim, in_delim_location, keep_where)
         else:
-            file_counter = 1
-            for file in files:
-                file_name = file
-                old_full = in_dir + '\\' + file_name
-                file_type = "." + file_name.split(".")[-1]
-                new_full = in_dir + '\\' + str(file_counter) + file_type
-                os.rename(old_full, new_full)
-                print(f"{old_full} -> {new_full}")
-                file_counter += 1
+            numerical_renamer(in_dir, files)
+
         print("DONE!\n--------------------------------")
 
+        # TODO: Maybe add a backup folder and a dialog asking if the files were renamed correctly.
+        #  Delete the folder contents if yes.
 
-def check_name(name, this_dir):
-    files = os.listdir(this_dir)
-    file_type = "." + str(name.split(".")[-1])
-    file_prefix_list = name.split(".")[:-1]
-    file_prefix = ''.join([str(elem) for elem in file_prefix_list])
-    new_name = name
-    counter = 2
-    while True:
-        if new_name in files:
-            new_name = file_prefix + "-" + str(counter) + file_type
-            counter += 1
-        else:
-            return new_name
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     MainWindow = QtWidgets.QMainWindow()
+#     ui = Ui_MainWindow()
+#     ui.setupUi(MainWindow)
+#     MainWindow.show()
+#     sys.exit(app.exec_())

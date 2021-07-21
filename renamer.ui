@@ -46,7 +46,7 @@
       <x>80</x>
       <y>150</y>
       <width>731</width>
-      <height>86</height>
+      <height>138</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -72,6 +72,9 @@
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="placeholderText">
+        <string>Enter full directory here</string>
        </property>
       </widget>
      </item>
@@ -99,6 +102,8 @@
        <property name="font">
         <font>
          <pointsize>12</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -131,6 +136,8 @@
         <font>
          <family>Calibri</family>
          <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -143,12 +150,61 @@
        </item>
        <item>
         <property name="text">
-         <string>Front</string>
+         <string>First</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Back</string>
+         <string>Last</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="keep_label">
+       <property name="font">
+        <font>
+         <family>Calibri</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Keep Contents:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="keep_input">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <family>Calibri</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>----------</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Before Delimiter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>After Delimiter</string>
         </property>
        </item>
       </widget>
@@ -166,6 +222,7 @@
     </property>
     <property name="font">
      <font>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
