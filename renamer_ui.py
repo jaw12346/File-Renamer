@@ -186,11 +186,3 @@ class Ui_MainWindow(object):
         # TODO: Maybe add a backup folder and a dialog asking if the files were renamed correctly.
         #  Delete the folder contents if yes.
 
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     MainWindow = QtWidgets.QMainWindow()
-#     ui = Ui_MainWindow()
-#     ui.setupUi(MainWindow)
-#     MainWindow.show()
-#     sys.exit(app.exec_())

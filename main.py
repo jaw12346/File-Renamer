@@ -1,4 +1,5 @@
 from renamer_ui import *
+from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import os
 
@@ -94,10 +95,15 @@ def check_name(name, this_dir):
             return str(new_name)
 
 
-if __name__ == "__main__":
+def main():
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
